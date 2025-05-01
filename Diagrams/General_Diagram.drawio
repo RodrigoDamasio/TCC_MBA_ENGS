@@ -1,0 +1,258 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36" version="26.2.14">
+  <diagram name="Page-1" id="56gFs3682IXk0IIHVJRW">
+    <mxGraphModel dx="617" dy="355" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-93" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="13" y="647" width="320" height="280" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-75" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="340" y="349" width="200" height="280" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-74" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="13" y="349" width="320" height="280" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-41" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="340" y="40" width="200" height="280" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-9" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="10" y="40" width="320" height="280" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-2" value="" style="image;sketch=0;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/mscae/Docker.svg;" vertex="1" parent="1">
+          <mxGeometry x="14.66" y="50" width="48.79" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-10" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="20" y="110" width="170" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-4" value="" style="image;sketch=0;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/mscae/Container_Instances.svg;" vertex="1" parent="1">
+          <mxGeometry x="260" y="121" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-6" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/blockchain/Consortium.svg;rotation=0;container=0;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;imageBackground=none;" vertex="1" parent="1">
+          <mxGeometry x="30" y="120" width="50" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-7" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/blockchain/Blockchain_Applications.svg;" vertex="1" parent="1">
+          <mxGeometry x="83.12" y="198.5" width="43.77" height="61.5" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-14" value="" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=mxgraph.basic.tick;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="225" y="101" width="15" height="19" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-16" value="Exploração - Ethstats" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=8;" vertex="1" parent="1">
+          <mxGeometry x="240" y="107" width="80" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-17" value="Rede hyperledger Besu - 4 nós (4 containers)" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=8;" vertex="1" parent="1">
+          <mxGeometry x="20" y="90" width="170" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-18" value="" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=mxgraph.basic.tick;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="13" y="98" width="10" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-19" value="Contrato solidity" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=8;" vertex="1" parent="1">
+          <mxGeometry x="71.94" y="179" width="80" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-36" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1.003;entryY=0.415;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="5fA-dxYR_pElMaw-BJbp-21" target="5fA-dxYR_pElMaw-BJbp-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-21" value="" style="image;sketch=0;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/mscae/Container_Instances.svg;" vertex="1" parent="1">
+          <mxGeometry x="260" y="174" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-22" value="Serviço para popular dados" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=8;" vertex="1" parent="1">
+          <mxGeometry x="240" y="160" width="80" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-33" value="" style="fillColor=#28A8E0;verticalLabelPosition=bottom;sketch=0;html=1;strokeColor=#ffffff;verticalAlign=top;align=center;points=[[0.145,0.145,0],[0.5,0,0],[0.855,0.145,0],[1,0.5,0],[0.855,0.855,0],[0.5,1,0],[0.145,0.855,0],[0,0.5,0]];pointerEvents=1;shape=mxgraph.cisco_safe.compositeIcon;bgIcon=ellipse;resIcon=mxgraph.cisco_safe.capability.time_synchronization;" vertex="1" parent="1">
+          <mxGeometry x="220" y="467" width="20" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-37" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.137;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="5fA-dxYR_pElMaw-BJbp-4" target="5fA-dxYR_pElMaw-BJbp-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-38" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.595;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="5fA-dxYR_pElMaw-BJbp-29" target="5fA-dxYR_pElMaw-BJbp-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-39" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1.01;entryY=0.869;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="5fA-dxYR_pElMaw-BJbp-30" target="5fA-dxYR_pElMaw-BJbp-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-12" value="" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=mxgraph.basic.tick;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="345" y="194.5" width="15" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-15" value="Exploração - Nethereum + CURL commands" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=8;" vertex="1" parent="1">
+          <mxGeometry x="360" y="191.5" width="170" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-29" value="" style="shape=image;html=1;verticalLabelPosition=bottom;verticalAlign=top;imageAspect=0;image=img/clipart/Gear_128x128.png" vertex="1" parent="1">
+          <mxGeometry x="385" y="211.5" width="25" height="22.5" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-30" value="" style="image;aspect=fixed;perimeter=ellipsePerimeter;html=1;align=center;shadow=0;dashed=0;fontColor=#4277BB;labelBackgroundColor=default;fontSize=12;spacingTop=3;image=img/lib/ibm/blockchain/blockchain_developer.svg;" vertex="1" parent="1">
+          <mxGeometry x="383" y="260" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-31" value="Hardhat para deploy dos contratos e para popular dados" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=8;" vertex="1" parent="1">
+          <mxGeometry x="358" y="240" width="162" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-35" value="" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=mxgraph.basic.tick;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="345" y="243" width="15" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-42" value="Containers rodando no docker" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=8;" vertex="1" parent="1">
+          <mxGeometry x="10" y="20" width="110" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-43" value="Máquina de desenvolvimento" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=8;" vertex="1" parent="1">
+          <mxGeometry x="340" y="20" width="110" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-46" value="" style="image;sketch=0;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/mscae/Docker.svg;" vertex="1" parent="1">
+          <mxGeometry x="15.659999999999997" y="359" width="48.79" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-47" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="20" y="419" width="170" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-48" value="" style="image;sketch=0;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/mscae/Container_Instances.svg;" vertex="1" parent="1">
+          <mxGeometry x="260" y="430" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-49" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/blockchain/Consortium.svg;rotation=0;container=0;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;imageBackground=none;" vertex="1" parent="1">
+          <mxGeometry x="30" y="429" width="50" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-50" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/blockchain/Blockchain_Applications.svg;" vertex="1" parent="1">
+          <mxGeometry x="83.12" y="507.5" width="43.77" height="61.5" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-52" value="" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=mxgraph.basic.tick;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="225" y="410" width="15" height="19" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-53" value="Exploração - Fabric" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=8;" vertex="1" parent="1">
+          <mxGeometry x="240" y="416" width="80" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-54" value="Rede hyperledger Fabric - 6 peers (6 containers)" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=8;" vertex="1" parent="1">
+          <mxGeometry x="13" y="399" width="190" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-55" value="" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=mxgraph.basic.tick;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="13" y="407" width="10" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-56" value="Contrato Go" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=8;" vertex="1" parent="1">
+          <mxGeometry x="73" y="488" width="80" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-57" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1.003;entryY=0.415;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="5fA-dxYR_pElMaw-BJbp-58" target="5fA-dxYR_pElMaw-BJbp-47">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-58" value="" style="image;sketch=0;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/mscae/Container_Instances.svg;" vertex="1" parent="1">
+          <mxGeometry x="260" y="483" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-59" value="Serviço para popular dados" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=8;" vertex="1" parent="1">
+          <mxGeometry x="240" y="469" width="80" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-61" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.137;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="5fA-dxYR_pElMaw-BJbp-48" target="5fA-dxYR_pElMaw-BJbp-47">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-62" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.595;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="5fA-dxYR_pElMaw-BJbp-66" target="5fA-dxYR_pElMaw-BJbp-47">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-63" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1.01;entryY=0.869;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="5fA-dxYR_pElMaw-BJbp-67" target="5fA-dxYR_pElMaw-BJbp-47">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-64" value="" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=mxgraph.basic.tick;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="345" y="503.5" width="15" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-65" value="Exploração - peer commands" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=8;" vertex="1" parent="1">
+          <mxGeometry x="330" y="500.5" width="160" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-66" value="" style="shape=image;html=1;verticalLabelPosition=bottom;verticalAlign=top;imageAspect=0;image=img/clipart/Gear_128x128.png" vertex="1" parent="1">
+          <mxGeometry x="385" y="520.5" width="25" height="22.5" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-67" value="" style="image;aspect=fixed;perimeter=ellipsePerimeter;html=1;align=center;shadow=0;dashed=0;fontColor=#4277BB;labelBackgroundColor=default;fontSize=12;spacingTop=3;image=img/lib/ibm/blockchain/blockchain_developer.svg;" vertex="1" parent="1">
+          <mxGeometry x="383" y="569" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-68" value="Peer commands para deploy e popular dados" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=8;" vertex="1" parent="1">
+          <mxGeometry x="360" y="550" width="171" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-69" value="" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=mxgraph.basic.tick;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="345" y="552" width="15" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-70" value="Containers rodando no docker" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=8;" vertex="1" parent="1">
+          <mxGeometry x="12" y="329" width="110" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-71" value="Máquina de desenvolvimento" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=8;" vertex="1" parent="1">
+          <mxGeometry x="340" y="329" width="110" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-72" value="" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#7AA116;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.backup_recovery_time_objective;" vertex="1" parent="1">
+          <mxGeometry x="217.12" y="151" width="22.88" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-76" value="" style="fillColor=#28A8E0;verticalLabelPosition=bottom;sketch=0;html=1;strokeColor=#ffffff;verticalAlign=top;align=center;points=[[0.145,0.145,0],[0.5,0,0],[0.855,0.145,0],[1,0.5,0],[0.855,0.855,0],[0.5,1,0],[0.145,0.855,0],[0,0.5,0]];pointerEvents=1;shape=mxgraph.cisco_safe.compositeIcon;bgIcon=ellipse;resIcon=mxgraph.cisco_safe.capability.time_synchronization;" vertex="1" parent="1">
+          <mxGeometry x="131.94" y="830" width="20" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-77" value="" style="image;sketch=0;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/mscae/Docker.svg;" vertex="1" parent="1">
+          <mxGeometry x="15.659999999999997" y="670" width="48.79" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-80" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/blockchain/Consortium.svg;rotation=0;container=0;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;imageBackground=none;" vertex="1" parent="1">
+          <mxGeometry x="46" y="748" width="50" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-85" value="Rede hyperledger Besu" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=8;" vertex="1" parent="1">
+          <mxGeometry x="20.5" y="719" width="103" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-86" value="" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=mxgraph.basic.tick;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="16" y="729" width="10" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-88" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.537;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="5fA-dxYR_pElMaw-BJbp-89" target="5fA-dxYR_pElMaw-BJbp-97">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="85" y="861.3" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-89" value="" style="image;sketch=0;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/mscae/Container_Instances.svg;" vertex="1" parent="1">
+          <mxGeometry x="171.94" y="846" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-90" value="Serviço para popular dados" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=8;" vertex="1" parent="1">
+          <mxGeometry x="151.94" y="832" width="80" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-92" value="Serviço para popular dados" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=8;" vertex="1" parent="1">
+          <mxGeometry x="7" y="626" width="110" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-97" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/blockchain/Consortium.svg;rotation=0;container=0;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;imageBackground=none;" vertex="1" parent="1">
+          <mxGeometry x="30" y="834" width="50" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-98" value="Rede hyperledger Fabric" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=8;" vertex="1" parent="1">
+          <mxGeometry x="21.66" y="816" width="103" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-99" value="" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=mxgraph.basic.tick;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="16" y="826" width="10" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-101" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="5fA-dxYR_pElMaw-BJbp-102" target="5fA-dxYR_pElMaw-BJbp-80">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="108.06" y="770" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-102" value="" style="image;sketch=0;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/mscae/Container_Instances.svg;" vertex="1" parent="1">
+          <mxGeometry x="173" y="758" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-103" value="Serviço para popular dados" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=8;" vertex="1" parent="1">
+          <mxGeometry x="153" y="741" width="80" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-104" value="" style="image;sketch=0;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/mscae/Container_Instances.svg;" vertex="1" parent="1">
+          <mxGeometry x="283" y="798" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-105" value="" style="fillColor=#28A8E0;verticalLabelPosition=bottom;sketch=0;html=1;strokeColor=#ffffff;verticalAlign=top;align=center;points=[[0.145,0.145,0],[0.5,0,0],[0.855,0.145,0],[1,0.5,0],[0.855,0.855,0],[0.5,1,0],[0.145,0.855,0],[0,0.5,0]];pointerEvents=1;shape=mxgraph.cisco_safe.compositeIcon;bgIcon=ellipse;resIcon=mxgraph.cisco_safe.capability.time_synchronization;" vertex="1" parent="1">
+          <mxGeometry x="258" y="780" width="20" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-106" value="Frontend" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=8;" vertex="1" parent="1">
+          <mxGeometry x="258" y="780" width="80" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-108" value="" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#7AA116;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.backup_recovery_time_objective;" vertex="1" parent="1">
+          <mxGeometry x="131.94" y="736" width="22.88" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-112" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.992;entryY=0.457;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="5fA-dxYR_pElMaw-BJbp-104" target="5fA-dxYR_pElMaw-BJbp-89">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="240" y="813" />
+              <mxPoint x="240" y="860" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-113" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.976;entryY=0.552;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="5fA-dxYR_pElMaw-BJbp-104" target="5fA-dxYR_pElMaw-BJbp-102">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="240" y="813" />
+              <mxPoint x="240" y="775" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-114" value="" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#7AA116;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.backup_recovery_time_objective;" vertex="1" parent="1">
+          <mxGeometry x="65" y="488" width="22.88" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="5fA-dxYR_pElMaw-BJbp-115" value="" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#7AA116;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.backup_recovery_time_objective;" vertex="1" parent="1">
+          <mxGeometry x="57.12" y="182" width="22.88" height="22" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
