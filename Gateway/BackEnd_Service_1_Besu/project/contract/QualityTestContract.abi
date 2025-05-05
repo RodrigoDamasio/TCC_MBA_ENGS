@@ -1,0 +1,135 @@
+[
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "id",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "finalResult",
+        "type": "string"
+      }
+    ],
+    "name": "QualityTestBatchCreated",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "id",
+        "type": "string"
+      },
+      {
+        "internalType": "int256",
+        "name": "minLimit",
+        "type": "int256"
+      },
+      {
+        "internalType": "int256",
+        "name": "maxLimit",
+        "type": "int256"
+      },
+      {
+        "internalType": "int256[]",
+        "name": "values",
+        "type": "int256[]"
+      },
+      {
+        "internalType": "string",
+        "name": "productionOrder",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "testDate",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "testDescription",
+        "type": "string"
+      }
+    ],
+    "name": "performBatchQualityTest",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "id",
+        "type": "string"
+      }
+    ],
+    "name": "queryQualityTestBatch",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      },
+      {
+        "internalType": "int256",
+        "name": "",
+        "type": "int256"
+      },
+      {
+        "internalType": "int256",
+        "name": "",
+        "type": "int256"
+      },
+      {
+        "internalType": "int256[]",
+        "name": "",
+        "type": "int256[]"
+      },
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      },
+      {
+        "components": [
+          {
+            "internalType": "int256",
+            "name": "value",
+            "type": "int256"
+          },
+          {
+            "internalType": "string",
+            "name": "result",
+            "type": "string"
+          }
+        ],
+        "internalType": "struct QualityTestContract.SampleResult[]",
+        "name": "",
+        "type": "tuple[]"
+      },
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]

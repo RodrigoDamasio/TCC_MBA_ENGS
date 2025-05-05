@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    environment:
+      - ETH_NODE_URL=http://ethereum-node:8550
+      - PRIVATE_KEY=0xf8060dd8211fd80d62023e74aff54d870e13835c630865d6250761394efddc98
+      - CONTRACT_ADDRESS=0x370ca606b26d87a894f61395d0eefddb7161a9cb
+    depends_on:
+      - ethereum-node
+
+  ethereum-node:
+    image: ethereum/client-go:stable
+    ports:
+      - "8550:8550"
+    command:
+      - "--http"
+      - "--http.addr=0.0.0.0"
+      - "--http.port=8550"
+      - "--http.api=eth,net,web3"
+      - "--http.corsdomain=*"
+      - "--dev" # Modo de desenvolvimento para testes
