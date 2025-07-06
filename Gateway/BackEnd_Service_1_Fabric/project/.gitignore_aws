@@ -1,5 +1,0 @@
-# Configurações AWS sensíveis
-CCInfra/DB/aws_config.yaml
-
-# Se você quiser manter o arquivo de exemplo
-!CCInfra/DB/aws_config.yaml.example
