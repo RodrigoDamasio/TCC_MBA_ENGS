@@ -1,14 +1,58 @@
 version: '3.8'
 
 services:
-  app:
+  fabric-gateway:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: fabric-gateway-service
     ports:
-      - "8080:8080"
+      - "8081:8081"
     environment:
-      - CHAINCODE_NAME=chaincodetcc
-      - CHANNEL_NAME=channeltcc
+      # Variáveis de ambiente para a aplicação
+      - PORT=8081
+      - GIN_MODE=release
+      
+      # Variáveis de ambiente para Fabric (opcionais - podem vir do arquivo de configuração)
+      #- CHAINCODE_NAME=chaincodetcc
+      #- CHANNEL_NAME=channeltcc
+      
+      # Variáveis de ambiente para AWS (opcionais - podem ser sobrescritas)
+      #- AWS_REGION=${AWS_REGION:-us-east-1}
+      #- AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-}
+      #- AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-}
+      
     volumes:
-      - ./crypto:/crypto
+      # Volume para certificados e organizações do Hyperledger Fabric
+      - ./organizations:/app/organizations:ro
+      
+      # Volumes para arquivos de configuração (permitindo edição externa)
+      - ./CCInfra/DB/aws_config.yaml:/app/CCInfra/DB/aws_config.yaml:ro
+      - ./CCInfra/Grpc_Hyperledger/fabric_config.yaml:/app/CCInfra/Grpc_Hyperledger/fabric_config.yaml:ro
+      
+      # Volume para crypto (se existir)
+      - ./crypto:/app/crypto:ro
+      
+      # Volume para logs (usando volume nomeado)
+      - fabric-logs:/app/logs
+      
+    networks:
+      - fabric-gateway-network
+      
+    restart: unless-stopped
+    
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8081/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  fabric-gateway-network:
+    driver: bridge
+    name: fabric-gateway-network
+
+volumes:
+  fabric-logs:
+    driver: local

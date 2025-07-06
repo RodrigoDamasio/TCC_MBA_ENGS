@@ -1,7 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-contract QualityTestContract {
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
+
+contract QualityTestContract is ERC721 {
+    using Counters for Counters.Counter;
+    Counters.Counter private _tokenIds;
+
     // Estrutura para representar o resultado de uma amostra individual
     struct SampleResult {
         int256 value;
@@ -19,15 +25,20 @@ contract QualityTestContract {
         string testDescription;
         SampleResult[] sampleResults;
         string finalResult; // "OK" ou "NOK"
+        string imagesJson; // Campo opcional para imagens em JSON
     }
 
-    // Mapeamento para armazenar os lotes de teste de qualidade
-    mapping(string => QualityTestBatch) private qualityTestBatches;
+    // Mapeamento do ID do token para os dados do batch
+    mapping(uint256 => QualityTestBatch) private qualityTestBatches;
+    // Mapeamento do id string para o tokenId ERC721 (para compatibilidade)
+    mapping(string => uint256) private batchIdToTokenId;
 
     // Evento para notificar a criação de um novo lote de teste
-    event QualityTestBatchCreated(string id, string finalResult);
+    event QualityTestBatchCreated(string id, uint256 tokenId, string finalResult);
 
-    // Função para realizar o teste de qualidade em um lote
+    constructor() ERC721("QualityTestBatchNFT", "QTB") {}
+
+    // Função para realizar o teste de qualidade em um lote (mint NFT)
     function performBatchQualityTest(
         string memory id,
         int256 minLimit,
@@ -35,29 +46,31 @@ contract QualityTestContract {
         int256[] memory values,
         string memory productionOrder,
         string memory testDate,
-        string memory testDescription
+        string memory testDescription,
+        string memory imagesJson // Novo campo opcional
     ) public {
-        // Verifica se o ID já existe
-        require(bytes(qualityTestBatches[id].id).length == 0, "Batch with this ID already exists");
+        require(batchIdToTokenId[id] == 0, "Batch with this ID already exists");
 
-        // Criação manual da array de SampleResult
         SampleResult[] memory sampleResults = new SampleResult[](values.length);
         string memory finalResult = "OK";
 
-        // Valida cada valor e determina o resultado
         for (uint256 i = 0; i < values.length; i++) {
             string memory result = "OK";
-
             if (values[i] < minLimit || values[i] > maxLimit) {
                 result = "NOK";
                 finalResult = "NOK";
             }
-
             sampleResults[i] = SampleResult(values[i], result);
         }
 
-        // Armazena o lote de teste no mapeamento
-        QualityTestBatch storage batch = qualityTestBatches[id];
+        _tokenIds.increment();
+        uint256 newTokenId = _tokenIds.current();
+
+        // Mint do NFT para o remetente
+        _mint(msg.sender, newTokenId);
+
+        // Armazena o batch no mapeamento
+        QualityTestBatch storage batch = qualityTestBatches[newTokenId];
         batch.id = id;
         batch.minLimit = minLimit;
         batch.maxLimit = maxLimit;
@@ -66,17 +79,18 @@ contract QualityTestContract {
         batch.testDate = testDate;
         batch.testDescription = testDescription;
         batch.finalResult = finalResult;
+        batch.imagesJson = imagesJson;
 
-        // Copiando manualmente os elementos de sampleResults para o storage
         for (uint256 i = 0; i < sampleResults.length; i++) {
             batch.sampleResults.push(sampleResults[i]);
         }
 
-        // Emite o evento de criação do lote
-        emit QualityTestBatchCreated(id, finalResult);
+        batchIdToTokenId[id] = newTokenId; // Relaciona o id string ao tokenId
+
+        emit QualityTestBatchCreated(id, newTokenId, finalResult);
     }
 
-    // Função para consultar um lote de teste de qualidade pelo ID
+    // Função para consultar um lote de teste de qualidade pelo ID string
     function queryQualityTestBatch(string memory id) public view returns (
         string memory,
         int256,
@@ -86,10 +100,12 @@ contract QualityTestContract {
         string memory,
         string memory,
         SampleResult[] memory,
-        string memory
+        string memory,
+        string memory // imagesJson
     ) {
-        QualityTestBatch storage batch = qualityTestBatches[id];
-        require(bytes(batch.id).length != 0, "Test batch with this ID does not exist");
+        require(batchIdToTokenId[id] != 0, "Test batch with this ID does not exist");
+        uint256 tokenId = batchIdToTokenId[id];
+        QualityTestBatch storage batch = qualityTestBatches[tokenId];
 
         return (
             batch.id,
@@ -100,7 +116,38 @@ contract QualityTestContract {
             batch.testDate,
             batch.testDescription,
             batch.sampleResults,
-            batch.finalResult
+            batch.finalResult,
+            batch.imagesJson
+        );
+    }
+
+    // Consulta por tokenId (caso queira usar a lógica padrão ERC721)
+    function queryQualityTestBatchByToken(uint256 tokenId) public view returns (
+        string memory,
+        int256,
+        int256,
+        int256[] memory,
+        string memory,
+        string memory,
+        string memory,
+        SampleResult[] memory,
+        string memory,
+        string memory
+    ) {
+         _requireOwned(tokenId); // lança exceção se não existir
+        QualityTestBatch storage batch = qualityTestBatches[tokenId];
+
+        return (
+            batch.id,
+            batch.minLimit,
+            batch.maxLimit,
+            batch.values,
+            batch.productionOrder,
+            batch.testDate,
+            batch.testDescription,
+            batch.sampleResults,
+            batch.finalResult,
+            batch.imagesJson
         );
     }
 }

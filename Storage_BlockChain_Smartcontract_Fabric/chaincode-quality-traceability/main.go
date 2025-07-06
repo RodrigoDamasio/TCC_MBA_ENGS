@@ -19,7 +19,7 @@ type SampleResult struct {
 	Result string `json:"result"` // "OK" or "NOK"
 }
 
-// QualityTestBatch represents the data structure for batch quality inspection.
+// QualityTestBatch represents the NFT for a batch quality inspection.
 type QualityTestBatch struct {
 	ID              string         `json:"id"`
 	MinLimit        int            `json:"min_limit"`
@@ -30,10 +30,21 @@ type QualityTestBatch struct {
 	TestDescription string         `json:"test_description"`
 	SampleResults   []SampleResult `json:"sample_results"`
 	FinalResult     string         `json:"final_result"` // "OK" or "NOK"
+	TokenURI        string         `json:"token_uri"`    // padrão ERC721 (JSON string)
 }
 
-// PerformBatchQualityTest validates multiple values against the limits and stores the result in the ledger.
-func (q *QualityTestContract) PerformBatchQualityTest(ctx contractapi.TransactionContextInterface, id string, minLimit int, maxLimit int, values []int, productionOrder string, testDate string, testDescription string) (*QualityTestBatch, error) {
+// PerformBatchQualityTest validates multiple values against the limits and stores the result in the ledger as a NFT.
+func (q *QualityTestContract) PerformBatchQualityTest(
+	ctx contractapi.TransactionContextInterface,
+	id string,
+	minLimit int,
+	maxLimit int,
+	values []int,
+	productionOrder string,
+	testDate string,
+	testDescription string,
+	tokenURI string, // Novo campo: metadados do NFT (JSON padrão ERC721)
+) (*QualityTestBatch, error) {
 	// Check if the ID already exists
 	existingBatch, err := ctx.GetStub().GetState(id)
 	if err != nil {
@@ -49,22 +60,17 @@ func (q *QualityTestContract) PerformBatchQualityTest(ctx contractapi.Transactio
 	// Validate each value
 	for _, value := range values {
 		result := "OK"
-
 		if value < minLimit || value > maxLimit {
-
 			result = "NOK"
 			finalResult = "NOK"
-
 		}
-
 		sampleResults = append(sampleResults, SampleResult{
 			Value:  value,
 			Result: result,
 		})
-
 	}
 
-	// Create the QualityTestBatch object
+	// Create the QualityTestBatch object (NFT)
 	testBatch := QualityTestBatch{
 		ID:              id,
 		MinLimit:        minLimit,
@@ -75,6 +81,7 @@ func (q *QualityTestContract) PerformBatchQualityTest(ctx contractapi.Transactio
 		TestDescription: testDescription,
 		SampleResults:   sampleResults,
 		FinalResult:     finalResult,
+		TokenURI:        tokenURI, // Metadados compatíveis com padrão NFT
 	}
 
 	// Serialize the object to JSON
@@ -83,7 +90,7 @@ func (q *QualityTestContract) PerformBatchQualityTest(ctx contractapi.Transactio
 		return nil, fmt.Errorf("failed to serialize test batch data: %v", err)
 	}
 
-	// Store the data in the ledger
+	// Store the data in the ledger (id = tokenId do NFT)
 	err = ctx.GetStub().PutState(id, testBatchJSON)
 	if err != nil {
 		return nil, fmt.Errorf("failed to store test batch data in the ledger: %v", err)
@@ -92,7 +99,7 @@ func (q *QualityTestContract) PerformBatchQualityTest(ctx contractapi.Transactio
 	return &testBatch, nil
 }
 
-// QueryQualityTestBatch retrieves a quality test batch record from the ledger by its ID.
+// QueryQualityTestBatch retrieves a quality test batch NFT from the ledger by its ID.
 func (q *QualityTestContract) QueryQualityTestBatch(ctx contractapi.TransactionContextInterface, id string) (*QualityTestBatch, error) {
 	// Retrieve the data from the ledger
 	testBatchJSON, err := ctx.GetStub().GetState(id)

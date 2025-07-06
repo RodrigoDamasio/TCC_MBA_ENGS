@@ -7,23 +7,22 @@ import (
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 
-	_ "project/docs" // Geração de documentação Swagger
-	"project/handler"
+	_ "project/CCDocs" // Geração de documentação Swagger
+	handler "project/CCHandler"
 )
 
 // @title Quality Test API
 // @version 1.0
 // @description API para criar e consultar lotes de testes de qualidade usando contratos Solidity.
-// @host localhost:8081
+// @host localhost:8082
 // @BasePath /
+
 func main() {
 	router := gin.Default()
 
 	// Rotas
 	router.POST("/batch", handler.CreateBatch)
 	router.GET("/batch/:id", handler.QueryBatchByID)
-	router.GET("/ws/latest-block", handler.LatestBlockHandler)
-
 	// Swagger
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 

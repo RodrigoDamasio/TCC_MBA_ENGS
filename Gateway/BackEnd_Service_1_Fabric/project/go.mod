@@ -12,6 +12,7 @@ require (
 	github.com/swaggo/gin-swagger v1.6.0
 	github.com/swaggo/swag v1.16.4
 	google.golang.org/grpc v1.72.0
+	gopkg.in/yaml.v2 v2.4.0
 )
 
 require (

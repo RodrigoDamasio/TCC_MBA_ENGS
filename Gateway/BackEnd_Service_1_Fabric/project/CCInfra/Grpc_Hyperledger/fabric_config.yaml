@@ -1,0 +1,12 @@
+fabric:
+  msp_id: "Org1MSP"
+  crypto_path: "./organizations/peerOrganizations/org1.example.com"
+  peer_endpoint: "dns:///host.docker.internal:7051"
+  gateway_peer: "peer0.org1.example.com"
+  channel_name: "channeltcc"
+  chaincode_name: "chaincodetcc"
+  
+  paths:
+    cert_path: "/users/User1@org1.example.com/msp/signcerts"
+    key_path: "/users/User1@org1.example.com/msp/keystore"
+    tls_cert_path: "/peers/peer0.org1.example.com/tls/ca.crt"

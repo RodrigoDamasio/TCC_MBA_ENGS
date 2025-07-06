@@ -1,0 +1,14 @@
+# AWS Configuration files
+aws_config.yaml
+**/aws_config.yaml
+
+# VS Code configuration files
+launch.json
+**/launch.json
+.vscode/launch.json
+**/.vscode/launch.json
+
+# Other VS Code files
+.vscode/settings.json
+.vscode/tasks.json
+.vscode/extensions.json

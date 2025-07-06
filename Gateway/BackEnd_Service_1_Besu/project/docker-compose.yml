@@ -1,27 +1,54 @@
-version: "3.9"
+version: '3.8'
 
 services:
-  app:
+  besu-gateway:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: besu-gateway-service
     ports:
-      - "8081:8081"
+      - "8082:8082"
     environment:
-      - ETH_NODE_URL=http://ethereum-node:8550
-      - PRIVATE_KEY=0xf8060dd8211fd80d62023e74aff54d870e13835c630865d6250761394efddc98
-      - CONTRACT_ADDRESS=0x370ca606b26d87a894f61395d0eefddb7161a9cb
-    depends_on:
-      - ethereum-node
+      # Variáveis de ambiente para a aplicação
+      #- PORT=8082
+      - GIN_MODE=release
+      
+      # Variáveis de ambiente para Besu/Ethereum (opcionais - podem vir do arquivo de configuração)
+      #- RPC_URL=http://host.docker.internal:8550
+      #- CHAIN_ID=1337
+      
+      # Variáveis de ambiente para AWS (opcionais - podem ser sobrescritas)
+      #- AWS_REGION=${AWS_REGION:-us-east-1}
+      #- AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-}
+      #- AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-}
+      
+    volumes:
+      # Volumes para arquivos de configuração (permitindo edição externa)
+      - ./CCInfra/DB/aws_config.yaml:/app/CCInfra/DB/aws_config.yaml:ro
+      - ./CCInfra/RPC_besu/rpc_config.yaml:/app/CCInfra/RPC_besu/rpc_config.yaml:ro
+      
+      # Volume para logs (usando volume nomeado)
+      - besu-logs:/app/logs
+      
+    networks:
+      - besu-gateway-network
+    
+    restart: unless-stopped
+    
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8082/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
-  ethereum-node:
-    image: ethereum/client-go:stable
-    ports:
-      - "8550:8550"
-    command:
-      - "--http"
-      - "--http.addr=0.0.0.0"
-      - "--http.port=8550"
-      - "--http.api=eth,net,web3"
-      - "--http.corsdomain=*"
-      - "--dev" # Modo de desenvolvimento para testes
+networks:
+  besu-gateway-network:
+    driver: bridge
+    name: besu-gateway-network
+
+volumes:
+  besu-logs:
+    driver: local
+  besu-data:
+    driver: local

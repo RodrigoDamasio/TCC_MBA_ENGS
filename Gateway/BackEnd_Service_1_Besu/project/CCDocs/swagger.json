@@ -1,0 +1,187 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "API para criar e consultar lotes de testes de qualidade usando contratos Solidity.",
+        "title": "Quality Test API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:8082",
+    "basePath": "/",
+    "paths": {
+        "/batch": {
+            "post": {
+                "description": "Envia um lote de dados para o contrato inteligente e grava no DynamoDB",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "batch"
+                ],
+                "summary": "Cria um novo lote de teste de qualidade",
+                "parameters": [
+                    {
+                        "description": "Dados do lote de teste",
+                        "name": "batch",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/entitys.CreateBatchRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/batch/tx/{txHash}": {
+            "get": {
+                "description": "Retorna os logs e informações do recibo da transação na rede Besu",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "batch"
+                ],
+                "summary": "Consulta lote de teste de qualidade por hash da transação",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Hash da transação",
+                        "name": "txHash",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/batch/{id}": {
+            "get": {
+                "description": "Retorna os dados do lote de teste de qualidade pelo ID informado",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "batch"
+                ],
+                "summary": "Consulta lote de teste de qualidade por ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID do lote",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "entitys.CreateBatchRequest": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "imagesJson": {
+                    "type": "string"
+                },
+                "maxLimit": {
+                    "type": "integer"
+                },
+                "minLimit": {
+                    "type": "integer"
+                },
+                "productionOrder": {
+                    "type": "string"
+                },
+                "testDate": {
+                    "type": "string"
+                },
+                "testDescription": {
+                    "type": "string"
+                },
+                "values": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
+        }
+    }
+}

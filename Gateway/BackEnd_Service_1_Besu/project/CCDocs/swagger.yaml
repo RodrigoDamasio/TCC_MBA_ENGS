@@ -1,0 +1,125 @@
+basePath: /
+definitions:
+  entitys.CreateBatchRequest:
+    properties:
+      id:
+        type: string
+      imagesJson:
+        type: string
+      maxLimit:
+        type: integer
+      minLimit:
+        type: integer
+      productionOrder:
+        type: string
+      testDate:
+        type: string
+      testDescription:
+        type: string
+      values:
+        items:
+          type: integer
+        type: array
+    type: object
+host: localhost:8082
+info:
+  contact: {}
+  description: API para criar e consultar lotes de testes de qualidade usando contratos
+    Solidity.
+  title: Quality Test API
+  version: "1.0"
+paths:
+  /batch:
+    post:
+      consumes:
+      - application/json
+      description: Envia um lote de dados para o contrato inteligente e grava no DynamoDB
+      parameters:
+      - description: Dados do lote de teste
+        in: body
+        name: batch
+        required: true
+        schema:
+          $ref: '#/definitions/entitys.CreateBatchRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Cria um novo lote de teste de qualidade
+      tags:
+      - batch
+  /batch/{id}:
+    get:
+      description: Retorna os dados do lote de teste de qualidade pelo ID informado
+      parameters:
+      - description: ID do lote
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Consulta lote de teste de qualidade por ID
+      tags:
+      - batch
+  /batch/tx/{txHash}:
+    get:
+      description: Retorna os logs e informações do recibo da transação na rede Besu
+      parameters:
+      - description: Hash da transação
+        in: path
+        name: txHash
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Consulta lote de teste de qualidade por hash da transação
+      tags:
+      - batch
+swagger: "2.0"
