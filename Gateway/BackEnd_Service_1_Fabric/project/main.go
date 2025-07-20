@@ -23,6 +23,9 @@ func main() {
 
 	router := gin.Default()
 
+	// Initialize the batch controller
+	batchController := handler.NewBatchController()
+
 	// Health check endpoint
 	router.GET("/health", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
@@ -32,9 +35,9 @@ func main() {
 		})
 	})
 
-	// Rotas principais
-	router.POST("/batch", handler.CreateBatch)
-	router.GET("/batch/:id", handler.QueryBatchByID)
+	// Rotas principais - using controller methods
+	router.POST("/batch", batchController.CreateBatch)
+	router.GET("/batch/:id", batchController.QueryBatchByID)
 
 	// Documentação Swagger
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))

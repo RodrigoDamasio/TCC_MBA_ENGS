@@ -3,16 +3,29 @@ package handler
 import (
 	"encoding/json"
 	entity "project/CCEntitys"
+	"strconv"
 )
 
-// ExtractBatchInfo recebe uma string JSON e retorna a struct preenchida com os campos relevantes
-func ExtractBatchInfo(jsonStr string) (*entity.TransactionHyperledger_BatchInfo, error) {
+// Retorna TransactionData enviado ao Hyperledger pronto para DynamoDB
+func ExtractBatchInfo(jsonStr string, transactionHash string) (*entity.TransactionData, error) {
 
-	var info entity.TransactionHyperledger_BatchInfo
-	if err := json.Unmarshal([]byte(jsonStr), &info); err != nil {
+	var batchInfo entity.TransactionHyperledger_BatchInfo
+	if err := json.Unmarshal([]byte(jsonStr), &batchInfo); err != nil {
 		return nil, err
 	}
 
-	return &info, nil
+	idDinamo, err := strconv.Atoi(batchInfo.ID)
+	if err != nil {
+		return nil, err
+	}
 
+	transactionData := &entity.TransactionData{
+		ID:              idDinamo,
+		ProductionOrder: batchInfo.ProductionOrder,
+		FinalResult:     batchInfo.FinalResult,
+		Hash:            transactionHash,
+		Data_daytime:    batchInfo.Data_daytime,
+	}
+
+	return transactionData, nil
 }

@@ -39,3 +39,29 @@ type Transactioninfo struct {
 	  "gasUsed": receipt.GasUsed,*/
 
 }
+
+type AWS struct {
+	Credentials struct {
+		AccessKeyID     string `yaml:"access_key_id"`
+		SecretAccessKey string `yaml:"secret_access_key"`
+	} `yaml:"credentials"`
+	Config struct {
+		Region string `yaml:"region"`
+		Output string `yaml:"output"`
+	} `yaml:"config"`
+	DynamoDB struct {
+		Endpoint    string `yaml:"endpoint"`
+		TablePrefix string `yaml:"table_prefix"`
+	} `yaml:"dynamodb"`
+	Session struct {
+		Token   string `yaml:"token"`
+		Profile string `yaml:"profile"`
+	} `yaml:"session"`
+}
+
+type RPC struct {
+	ContractAddress string `yaml:"contract_address"`
+	PrivateKey      string `yaml:"private_key"`
+	ChainID         int64  `yaml:"chain_id"`
+	RPCURL          string `yaml:"rpc_url"`
+}

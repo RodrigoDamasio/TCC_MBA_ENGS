@@ -2,22 +2,29 @@ package handler
 
 import (
 	"context"
-	"log"
 	"math/big"
 	"net/http"
 	entity "project/CCEntitys"
 	db "project/CCInfra/DB"
 	infrastructure "project/CCInfra/RPC_besu"
-	"strconv"
-	"strings"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/gin-gonic/gin"
 )
 
-// Handler para criar um batch (usecase + handler)
-// Estrutura para requisição de criação de batch
+type BatchControllerInterface interface {
+	CreateBatch(c *gin.Context)
+	QueryBatchByID(c *gin.Context)
+	QueryBatchByTransaction(c *gin.Context)
+}
+
+type BatchController struct {
+}
+
+func NewBatchController() BatchControllerInterface {
+	return &BatchController{}
+}
 
 // CreateBatch godoc
 // @Summary      Cria um novo lote de teste de qualidade
@@ -30,7 +37,7 @@ import (
 // @Failure      400    {object}  map[string]string
 // @Failure      500    {object}  map[string]string
 // @Router       /batch [post]
-func CreateBatch(c *gin.Context) {
+func (bc *BatchController) CreateBatch(c *gin.Context) {
 
 	var Besu_Requisition_data entity.CreateBatchRequest
 
@@ -66,48 +73,14 @@ func CreateBatch(c *gin.Context) {
 		return
 	}
 
-	log.Printf("Log info: %v", receipt.Logs[1].Data)
-
-	statusLog := ""
-	if len(receipt.Logs) > 0 {
-		// Converte os dados do log para string ASCII
-		logDataASCII := string(receipt.Logs[1].Data)
-
-		if logDataASCII == "" {
-			statusLog = "Log vazio"
-		} else if contains := !(stringContains(logDataASCII, "N")); contains {
-			statusLog = "OK"
-		} else if contains := (stringContains(logDataASCII, "N")); contains {
-			statusLog = "NOK"
-		} else {
-			statusLog = "Outro"
-		}
-		log.Printf("Log info (ASCII): %s", logDataASCII)
-		log.Printf("Status detectado: %s", statusLog)
-	}
-
-	// ...existing code...
-
-	// Função auxiliar para busca case-insensitive
-
-	//Busca resultado do log
-
-	ID_Besu, err := strconv.Atoi(Besu_Requisition_data.ID)
+	// Processa o recibo da transação e extrai as informações
+	DinamoPopulate, err := ExtractBatchInfo(receipt, tx, Besu_Requisition_data)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID format"})
 		return
 	}
 
 	// GRAVAÇÃO NO DYNAMODB
-
-	DinamoPopulate := entity.TransactionData{
-		ID:              ID_Besu,
-		ProductionOrder: Besu_Requisition_data.ProductionOrder,
-		FinalResult:     statusLog,
-		Hash:            string(tx.Hash().Hex()),
-		Data_daytime:    Besu_Requisition_data.TestDate,
-	}
-
 	db.SaveTransaction(DinamoPopulate)
 
 	//CONFIRMAÇÃO GRAVAÇÃO NO BESU
@@ -132,7 +105,7 @@ func CreateBatch(c *gin.Context) {
 // @Success      200  {object}  map[string]interface{}
 // @Failure      500  {object}  map[string]string
 // @Router       /batch/{id} [get]
-func QueryBatchByID(c *gin.Context) {
+func (bc *BatchController) QueryBatchByID(c *gin.Context) {
 	id := c.Param("id")
 	blockchain, err := infrastructure.NewBlockchain()
 	if err != nil {
@@ -173,7 +146,7 @@ func QueryBatchByID(c *gin.Context) {
 // @Failure      404  {object}  map[string]string
 // @Failure      500  {object}  map[string]string
 // @Router       /batch/tx/{txHash} [get]
-func QueryBatchByTransaction(c *gin.Context) {
+func (bc *BatchController) QueryBatchByTransaction(c *gin.Context) {
 	txHash := c.Param("txHash")
 	blockchain, err := infrastructure.NewBlockchain()
 	if err != nil {
@@ -198,6 +171,5 @@ func QueryBatchByTransaction(c *gin.Context) {
 	})
 }
 
-func stringContains(s, substr string) bool {
-	return strings.Contains(strings.ToUpper(s), strings.ToUpper(substr))
-}
+// Backward compatibility wrapper functions
+// These can be removed once all code is updated to use the controller

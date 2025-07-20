@@ -3,3 +3,5 @@ rpc:
   private_key: "0xf8060dd8211fd80d62023e74aff54d870e13835c630865d6250761394efddc98"
   chain_id: 1337
   rpc_url: "http://host.docker.internal:8550"
+#host.docker.internal
+#new

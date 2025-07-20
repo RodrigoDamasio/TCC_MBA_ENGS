@@ -12,28 +12,37 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
 )
 
-// SaveTransaction salva os dados da transação no DynamoDB
-func SaveTransaction(transaction entity.TransactionData) error {
-	// Cria uma instância do ConfigManager e carrega a configuração
+var ClientPointer *dynamodb.Client
+var TablePointer *string
+
+func init() {
+
 	configManager := NewConfigManager()
+
+	// Carrega a configuração do arquivo YAML
 	err := configManager.LoadAWSConfig()
 	if err != nil {
 		log.Fatalf("Erro ao carregar configuração do arquivo YAML: %v", err)
-		return err
 	}
 
-	// Carrega a configuração padrão da AWS
 	cfg, err := config.LoadDefaultConfig(context.TODO())
 	if err != nil {
 		log.Fatalf("Erro ao carregar configuração da AWS: %v", err)
-		return err
 	}
 
-	// Cria o cliente do DynamoDB
+	// Novo cliente DynamoDB
 	client := dynamodb.NewFromConfig(cfg)
 
-	// Define o nome da tabela no DynamoDB a partir do ConfigManager
 	tableName := configManager.GetTableName()
+
+	ClientPointer = client
+	TablePointer = &tableName
+
+	log.Printf("Conexão com DynamoDB estabelecida com sucesso. Tabela: %s", tableName)
+
+}
+
+func SaveTransaction(transaction entity.TransactionData) error {
 
 	// Prepara os dados para inserção
 	item := map[string]types.AttributeValue{
@@ -44,9 +53,9 @@ func SaveTransaction(transaction entity.TransactionData) error {
 		"Data_daytime":    &types.AttributeValueMemberS{Value: transaction.Data_daytime},
 	}
 
-	// Realiza a operação de inserção no DynamoDB
-	_, err = client.PutItem(context.TODO(), &dynamodb.PutItemInput{
-		TableName: aws.String(tableName),
+	// Insere no DynamoDB
+	_, err := ClientPointer.PutItem(context.TODO(), &dynamodb.PutItemInput{
+		TableName: aws.String(*TablePointer),
 		Item:      item,
 	})
 

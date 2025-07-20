@@ -4,38 +4,21 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	entitys "project/CCEntitys"
 
 	"gopkg.in/yaml.v2"
 )
 
-// AWSConfig representa a estrutura do arquivo aws_config.yaml
+// Estrutura do arquivo aws_config.yaml
 type AWSConfig struct {
-	AWS struct {
-		Credentials struct {
-			AccessKeyID     string `yaml:"access_key_id"`
-			SecretAccessKey string `yaml:"secret_access_key"`
-		} `yaml:"credentials"`
-		Config struct {
-			Region string `yaml:"region"`
-			Output string `yaml:"output"`
-		} `yaml:"config"`
-		DynamoDB struct {
-			Endpoint    string `yaml:"endpoint"`
-			TablePrefix string `yaml:"table_prefix"`
-		} `yaml:"dynamodb"`
-		Session struct {
-			Token   string `yaml:"token"`
-			Profile string `yaml:"profile"`
-		} `yaml:"session"`
-	} `yaml:"aws"`
+	AWS entitys.AWS `yaml:"aws"`
 }
 
-// ConfigManager gerencia as configurações AWS
 type ConfigManager struct {
 	config *AWSConfig
 }
 
-// NewConfigManager cria uma nova instância do ConfigManager
+// Nova instância do ConfigManager
 func NewConfigManager() *ConfigManager {
 	return &ConfigManager{}
 }
@@ -51,6 +34,7 @@ func (cm *ConfigManager) LoadAWSConfig() error {
 	}
 
 	var config AWSConfig
+
 	err = yaml.Unmarshal(yamlFile, &config)
 	if err != nil {
 		log.Printf("Erro ao fazer unmarshal do YAML: %v", err)
@@ -61,7 +45,6 @@ func (cm *ConfigManager) LoadAWSConfig() error {
 	return nil
 }
 
-// GetTableName retorna o nome da tabela DynamoDB configurada
 func (cm *ConfigManager) GetTableName() string {
 	if cm.config == nil {
 		log.Printf("Configuração não carregada. Usando valor padrão.")
@@ -70,7 +53,6 @@ func (cm *ConfigManager) GetTableName() string {
 	return cm.config.AWS.DynamoDB.TablePrefix
 }
 
-// GetRegion retorna a região AWS configurada
 func (cm *ConfigManager) GetRegion() string {
 	if cm.config == nil {
 		log.Printf("Configuração não carregada. Usando valor padrão.")
@@ -79,7 +61,6 @@ func (cm *ConfigManager) GetRegion() string {
 	return cm.config.AWS.Config.Region
 }
 
-// GetDynamoDBEndpoint retorna o endpoint do DynamoDB configurado
 func (cm *ConfigManager) GetDynamoDBEndpoint() string {
 	if cm.config == nil {
 		return ""
@@ -87,7 +68,6 @@ func (cm *ConfigManager) GetDynamoDBEndpoint() string {
 	return cm.config.AWS.DynamoDB.Endpoint
 }
 
-// GetProfile retorna o perfil AWS configurado
 func (cm *ConfigManager) GetProfile() string {
 	if cm.config == nil {
 		return "default"
@@ -95,7 +75,6 @@ func (cm *ConfigManager) GetProfile() string {
 	return cm.config.AWS.Session.Profile
 }
 
-// GetConfig retorna a configuração completa (caso necessário)
 func (cm *ConfigManager) GetConfig() *AWSConfig {
 	return cm.config
 }

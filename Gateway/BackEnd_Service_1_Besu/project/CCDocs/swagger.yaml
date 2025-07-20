@@ -27,7 +27,7 @@ info:
   description: API para criar e consultar lotes de testes de qualidade usando contratos
     Solidity.
   title: Quality Test API
-  version: "1.0"
+  version: "2.0"
 paths:
   /batch:
     post:

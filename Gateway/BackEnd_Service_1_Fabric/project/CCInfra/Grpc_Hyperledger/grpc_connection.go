@@ -2,7 +2,7 @@ package Infra_grpc
 
 import (
 	"crypto/x509"
-	"fmt"
+	"log"
 	"os"
 	"path"
 
@@ -13,12 +13,21 @@ import (
 	"google.golang.org/grpc/credentials"
 )
 
+var ContractPointer *client.Contract
+
+func init() {
+
+	ContractPointer = GetContract()
+
+}
+
 // GetContract retorna o contrato para interagir com o Hyperledger Fabric
 func GetContract() *client.Contract {
+
 	// Carrega as configurações
 	err := LoadConfig("")
 	if err != nil {
-		panic(fmt.Errorf("erro ao carregar configurações: %w", err))
+		log.Fatalf("erro ao carregar configurações: %w", err)
 	}
 
 	clientConnection := newGrpcConnection()
@@ -37,20 +46,19 @@ func GetContract() *client.Contract {
 
 	network := gw.GetNetwork(Config.GetChannelName())
 	return network.GetContract(Config.GetChaincodeName())
+
 }
 
-//	func GetHashTransaction() *client.Transaction{
-//		return
-//	}
 func newGrpcConnection() *grpc.ClientConn {
+
 	certificatePEM, err := os.ReadFile(Config.GetTLSCertPath())
 	if err != nil {
-		panic(fmt.Errorf("failed to read TLS certificate file: %w", err))
+		log.Fatalf("failed to read TLS certificate file: %w", err)
 	}
 
 	certificate, err := identity.CertificateFromPEM(certificatePEM)
 	if err != nil {
-		panic(err)
+		log.Fatalf("failed to parse TLS certificate: %w", err)
 	}
 
 	certPool := x509.NewCertPool()
@@ -59,51 +67,57 @@ func newGrpcConnection() *grpc.ClientConn {
 
 	connection, err := grpc.Dial(Config.GetPeerEndpoint(), grpc.WithTransportCredentials(transportCredentials))
 	if err != nil {
-		panic(fmt.Errorf("failed to create gRPC connection: %w", err))
+		log.Fatalf("failed to create gRPC connection: %w", err)
 	}
 
 	return connection
+
 }
 
 func newIdentity() *identity.X509Identity {
+
 	certificatePEM, err := readFirstFile(Config.GetCertPath())
 	if err != nil {
-		panic(fmt.Errorf("failed to read certificate file: %w", err))
+		log.Fatalf("failed to read certificate file: %w", err)
 	}
 
 	certificate, err := identity.CertificateFromPEM(certificatePEM)
 	if err != nil {
-		panic(err)
+		log.Fatalf("failed to parse certificate: %w", err)
 	}
 
 	id, err := identity.NewX509Identity(Config.GetMSPID(), certificate)
 	if err != nil {
-		panic(err)
+		log.Fatalf("failed to create identity: %w", err)
 	}
 
 	return id
+
 }
 
 func newSign() identity.Sign {
+
 	privateKeyPEM, err := readFirstFile(Config.GetKeyPath())
 	if err != nil {
-		panic(fmt.Errorf("failed to read private key file: %w", err))
+		log.Fatalf("failed to read private key file: %w", err)
 	}
 
 	privateKey, err := identity.PrivateKeyFromPEM(privateKeyPEM)
 	if err != nil {
-		panic(err)
+		log.Fatalf("failed to parse private key: %w", err)
 	}
 
 	sign, err := identity.NewPrivateKeySign(privateKey)
 	if err != nil {
-		panic(err)
+		log.Fatalf("failed to create sign: %w", err)
 	}
 
 	return sign
+
 }
 
 func readFirstFile(dirPath string) ([]byte, error) {
+
 	dir, err := os.Open(dirPath)
 	if err != nil {
 		return nil, err
@@ -115,4 +129,5 @@ func readFirstFile(dirPath string) ([]byte, error) {
 	}
 
 	return os.ReadFile(path.Join(dirPath, fileNames[0]))
+
 }

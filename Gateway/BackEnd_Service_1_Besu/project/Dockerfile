@@ -76,11 +76,11 @@ RUN chmod +x /app/main \
 USER appuser
 
 # Expor porta
-EXPOSE 8081
+EXPOSE 8082
 
 # Definir variáveis de ambiente padrão
 ENV GIN_MODE=release
-ENV PORT=8081
+ENV PORT=8082
 
 # Garantir que o working directory seja /app
 WORKDIR /app

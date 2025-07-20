@@ -3,15 +3,25 @@ package handler
 import (
 	"encoding/json"
 	"net/http"
-	entity "project/CCEntitys"
 	db "project/CCInfra/DB"
 	grpc "project/CCInfra/Grpc_Hyperledger"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 
 	"github.com/hyperledger/fabric-gateway/pkg/client"
 )
+
+type BatchControllerInterface interface {
+	CreateBatch(c *gin.Context)
+	QueryBatchByID(c *gin.Context)
+}
+
+type BatchController struct {
+}
+
+func NewBatchController() BatchControllerInterface {
+	return &BatchController{}
+}
 
 // CreateBatch godoc
 // @Summary Cria um novo lote de teste de qualidade
@@ -23,8 +33,7 @@ import (
 // @Success 200 {string} string "Lote de teste de qualidade criado com sucesso"
 // @Failure 500 {string} string "Erro ao criar lote de teste de qualidade"
 // @Router /batch [post]
-
-func CreateBatch(c *gin.Context) {
+func (bc *BatchController) CreateBatch(c *gin.Context) {
 
 	var data map[string]interface{}
 
@@ -33,9 +42,9 @@ func CreateBatch(c *gin.Context) {
 		return
 	}
 
-	contract := grpc.GetContract()
+	//Envia transação para o Hyperledger Fabric
 
-	TransactionFields, commit, err := contract.SubmitAsync(
+	TransactionFields, commit, err := grpc.ContractPointer.SubmitAsync(
 		"PerformBatchQualityTest",
 		client.WithArguments(
 			data["id"].(string),
@@ -55,7 +64,9 @@ func CreateBatch(c *gin.Context) {
 	}
 
 	// Aguarda a confirmação do commit da transação no ledger (commit definitivo)
+
 	status, err := commit.Status()
+
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erro ao aguardar confirmação do commit"})
 		return
@@ -65,29 +76,28 @@ func CreateBatch(c *gin.Context) {
 		return
 	}
 
-	ExtractBatchInfo, err := ExtractBatchInfo(string(TransactionFields))
+	// Organiza dados a serem salvos no DynamoDB
 
-	ID_dinamo, err := strconv.Atoi(ExtractBatchInfo.ID)
-
-	// Salva os dados no DynamoDB APÓS commit confirmado
-	DinamoPopulate := entity.TransactionData{
-		ID:              ID_dinamo,
-		ProductionOrder: ExtractBatchInfo.ProductionOrder,
-		FinalResult:     ExtractBatchInfo.FinalResult,
-		Hash:            commit.TransactionID(),
-		Data_daytime:    ExtractBatchInfo.Data_daytime,
+	DinamoPopulate, err := ExtractBatchInfo(string(TransactionFields), commit.TransactionID())
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erro ao processar informações do lote para o DynamoDB"})
+		return
 	}
 
-	db.SaveTransaction(DinamoPopulate)
+	// Salva os dados no DynamoDB APÓS commit confirmado
 
-	// Não sobrescreve o erro anterior
-	// (erro do DynamoDB deve ser tratado individualmente, mas a transação já está confirmada no ledger)
+	db.SaveTransaction(*DinamoPopulate)
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Lote de teste de qualidade criado com sucesso e confirmado no ledger",
-		"Dados":   ExtractBatchInfo,
-		"hash":    DinamoPopulate.Hash,
-		"data":    DinamoPopulate.ProductionOrder,
+		"Dados": gin.H{
+			"ID":              DinamoPopulate.ID,
+			"ProductionOrder": DinamoPopulate.ProductionOrder,
+			"FinalResult":     DinamoPopulate.FinalResult,
+			"Data_daytime":    DinamoPopulate.Data_daytime,
+		},
+		"hash": DinamoPopulate.Hash,
+		"data": DinamoPopulate.ProductionOrder,
 	})
 }
 
@@ -102,13 +112,11 @@ func CreateBatch(c *gin.Context) {
 // @Failure 404 {string} string "Lote não encontrado"
 // @Failure 500 {string} string "Erro ao consultar lote"
 // @Router /batch/{id} [get]
-
-func QueryBatchByID(c *gin.Context) {
+func (bc *BatchController) QueryBatchByID(c *gin.Context) {
 
 	id := c.Param("id")
 
-	contract := grpc.GetContract()
-	evaluateResult, err := contract.EvaluateTransaction("QueryQualityTestBatch", id)
+	evaluateResult, err := grpc.ContractPointer.EvaluateTransaction("QueryQualityTestBatch", id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erro ao consultar lote de teste de qualidade"})
 		return
@@ -121,5 +129,19 @@ func QueryBatchByID(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, result)
+}
 
+// Backward compatibility wrapper functions
+// These can be removed once all code is updated to use the controller
+
+// CreateBatch is a wrapper function for backward compatibility
+func CreateBatch(c *gin.Context) {
+	controller := NewBatchController()
+	controller.CreateBatch(c)
+}
+
+// QueryBatchByID is a wrapper function for backward compatibility
+func QueryBatchByID(c *gin.Context) {
+	controller := NewBatchController()
+	controller.QueryBatchByID(c)
 }
