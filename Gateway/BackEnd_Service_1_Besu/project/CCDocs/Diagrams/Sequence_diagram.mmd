@@ -1,0 +1,80 @@
+sequenceDiagram
+    participant C as Client
+    participant GR as Gin Router
+    participant H as Handler
+    participant SF as Support Functions
+    participant RPC as RPCConnection (Besu)
+    participant BESU as Besu Node
+    participant DB as DynamoDBConnection
+
+    Note over C, DB: Cenário 1: Criação de Lote de Teste de Qualidade
+
+    C->>+GR: POST /batch (JSON payload)
+    GR->>+H: CreateBatch(context)
+    H->>+H: ShouldBindJSON(data)
+    H->>+SF: ParseEntityFromJSON(data)
+    SF-->>-H: QualityTestContract
+    H->>+RPC: CallMethod("PerformBatchQualityTest", args)
+    RPC->>+BESU: Envia transação para Besu
+    BESU-->>-RPC: Resultado da transação
+    RPC-->>-H: commit, err
+    H->>+H: commit.Status().Successful
+
+    alt Commit Successful
+        H->>+SF: ExtractBatchInfo(fields, txID)
+        SF-->>-H: TransactionData
+        H->>+DB: SaveTransaction(TransactionData)
+        DB-->>-H: Success
+        H-->>-GR: HTTP 200 + JSON Response
+    else Commit Failed
+        H-->>-GR: HTTP 500 + Error Message
+    end
+
+    GR-->>-C: JSON Response
+
+    Note over C, DB: ────────────────────────────────────────
+
+    Note over C, DB: Cenário 2: Consulta de Lote por ID
+
+    C->>+GR: GET /batch/{id}
+    GR->>+H: QueryBatchByID(context)
+    H->>+H: c.Param("id")
+    H->>+RPC: CallMethod("QueryQualityTestBatch", batchID)
+    RPC->>+BESU: Consulta leitura no Besu
+    BESU-->>-RPC: Batch Data (JSON)
+    RPC-->>-H: evaluateResult, err
+
+    alt Query Successful
+        H->>+H: json.Unmarshal(evaluateResult)
+        H-->>-GR: HTTP 200 + Batch Data JSON
+    else Query Failed
+        H-->>-GR: HTTP 500 + Error Message
+    end
+
+    GR-->>-C: JSON Response
+
+    Note over C, DB: ────────────────────────────────────────
+
+    Note over C, DB: Cenário 3: Health Check
+
+    C->>+GR: GET /health
+    GR->>+GR: Health Check Handler (main.go)
+    GR-->>-C: HTTP 200 + Health Status
+
+    Note over C, DB: ────────────────────────────────────────
+
+    Note over H: Erro de Validação
+    H-->>GR: HTTP 400 + "Dados inválidos"
+
+    Note over RPC: Erro de Conexão Besu
+    RPC-->>H: Error: "Failed to connect"
+    H-->>GR: HTTP 500 + "Erro ao conectar com Besu"
+
+    Note over BESU: Erro de Smart Contract
+    BESU-->>RPC: Contract Error
+    RPC-->>H: Transaction Error
+    H-->>GR: HTTP 500 + "Erro na execução do contrato"
+
+    Note over DB: Erro DynamoDB
+    DB-->>H: Database Error
+    Note right of DB: Erro na persistência<br/>(não afeta blockchain)

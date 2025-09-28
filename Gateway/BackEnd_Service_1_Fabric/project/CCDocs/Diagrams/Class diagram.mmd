@@ -1,0 +1,233 @@
+classDiagram
+    %% ===== PACOTE MAIN =====
+    class Main {
+        +main()
+        -setupServer() Server
+        -getPort() string
+        -waitForShutdown()
+    }
+
+    %% ===== PACOTE CCHandler (Controllers) =====
+    class BatchControllerInterface {
+        <<interface>>
+        +CreateBatch(c Context)
+        +QueryBatchByID(c Context)
+    }
+
+    class BatchController {
+        +CreateBatch(c Context)
+        +QueryBatchByID(c Context)
+    }
+
+    class SupportFunctions {
+        +ParseEntityFromJSON(data map) BatchInfo
+        +ExtractBatchInfo(fields string, txID string) TransactionData
+        +validateBatchData(data map) error
+    }
+
+    %% ===== PACOTE CCEntitys (Entidades de Domínio) =====
+    class TransactionHyperledger_BatchInfo {
+        +ID string
+        +MinLimit float64
+        +MaxLimit float64
+        +Values string
+        +ProductionOrder string
+        +TestDate string
+        +TestDescription string
+        +TokenURI string
+        +toJSON() string
+        +validate() error
+    }
+
+    class TransactionData {
+        +ID string
+        +ProductionOrder string
+        +FinalResult string
+        +Data_daytime string
+        +Hash string
+        +TransactionID string
+        +CreatedAt Time
+    }
+
+    class BatchResponse {
+        +ID string
+        +ProductionOrder string
+        +TestResults map
+        +Status string
+        +CreatedAt Time
+    }
+
+    class ErrorResponse {
+        +Error string
+        +Code int
+        +Details string
+        +Timestamp Time
+    }
+
+    %% ===== PACOTE CCInfra/Grpc_Hyperledger =====
+    class FabricConfig {
+        -config ConfigData
+        +LoadConfig(path string) error
+        +GetChannelName() string
+        +GetChaincodeName() string
+        +GetMSPID() string
+        +GetCertPath() string
+        +GetKeyPath() string
+        +GetTLSCertPath() string
+        +GetPeerEndpoint() string
+        +GetGatewayPeer() string
+    }
+
+    class ConfigData {
+        +Channel string
+        +Chaincode string
+        +Organization OrganizationConfig
+        +Peer PeerConfig
+    }
+
+    class OrganizationConfig {
+        +Name string
+        +MSPID string
+        +CertPath string
+        +KeyPath string
+    }
+
+    class PeerConfig {
+        +Name string
+        +Endpoint string
+        +TLSCertPath string
+    }
+
+    class GrpcConnection {
+        -contract Contract
+        +GetContract() Contract
+        +newGrpcConnection() ClientConn
+        +newIdentity() Identity
+        +newSign() Sign
+        +readFirstFile(dirPath string) bytes
+    }
+
+    %% ===== PACOTE CCInfra/DB =====
+    class ConfigManager {
+        -config AWSConfig
+        +LoadConfig(path string) error
+        +GetTableName() string
+        +GetRegion() string
+        +GetAccessKeyID() string
+        +GetSecretAccessKey() string
+        +GetEndpoint() string
+    }
+
+    class AWSConfig {
+        +AWS AWSCredentials
+    }
+
+    class AWSCredentials {
+        +Credentials CredentialsConfig
+        +Config RegionConfig
+        +DynamoDB DynamoDBConfig
+    }
+
+    class CredentialsConfig {
+        +AccessKeyID string
+        +SecretAccessKey string
+    }
+
+    class RegionConfig {
+        +Region string
+        +Output string
+    }
+
+    class DynamoDBConfig {
+        +Endpoint string
+        +TablePrefix string
+    }
+
+    class DynamoDBClient {
+        -client DynamoDB
+        -tableName string
+        +NewDynamoDBClient() DynamoDBClient
+        +SaveTransaction(data TransactionData) error
+        +GetTransaction(id string) TransactionData
+        +createTable() error
+        +tableExists() bool
+    }
+
+    %% ===== PACOTE CCDocs =====
+    class SwaggerDocs {
+        +Title string
+        +Version string
+        +Description string
+        +Host string
+        +BasePath string
+        +Schemes List
+    }
+
+    class APISchemas {
+        +CreateBatchRequest Schema
+        +CreateBatchResponse Schema
+        +BatchInfo Schema
+        +HealthResponse Schema
+    }
+
+    %% ===== DEPENDÊNCIAS EXTERNAS =====
+    class GinContext {
+        <<external>>
+        +ShouldBindJSON(obj interface) error
+        +JSON(code int, obj interface)
+        +Param(key string) string
+    }
+
+    class FabricClient {
+        <<external>>
+        +SubmitTransaction(name string, args List) Commit
+        +EvaluateTransaction(name string, args List) bytes
+    }
+
+    class DynamoDBService {
+        <<external>>
+        +PutItem(input PutItemInput) PutItemOutput
+        +GetItem(input GetItemInput) GetItemOutput
+    }
+
+    %% ===== RELACIONAMENTOS =====
+    
+    %% Main e Controllers
+    Main --> BatchController : creates
+    BatchController ..|> BatchControllerInterface : implements
+    
+    %% Controllers e Support Functions
+    BatchController --> SupportFunctions : uses
+    BatchController --> GinContext : uses
+    
+    %% Support Functions e Entidades
+    SupportFunctions --> TransactionHyperledger_BatchInfo : creates
+    SupportFunctions --> TransactionData : creates
+    BatchController --> BatchResponse : returns
+    BatchController --> ErrorResponse : returns
+    
+    %% Infraestrutura Fabric
+    BatchController --> GrpcConnection : uses
+    GrpcConnection --> FabricConfig : uses
+    GrpcConnection --> FabricClient : wraps
+    FabricConfig --> ConfigData : contains
+    ConfigData --> OrganizationConfig : contains
+    ConfigData --> PeerConfig : contains
+    
+    %% Infraestrutura Banco de Dados
+    SupportFunctions --> DynamoDBClient : uses
+    DynamoDBClient --> ConfigManager : uses
+    DynamoDBClient --> DynamoDBService : wraps
+    ConfigManager --> AWSConfig : contains
+    AWSConfig --> AWSCredentials : contains
+    AWSCredentials --> CredentialsConfig : contains
+    AWSCredentials --> RegionConfig : contains
+    AWSCredentials --> DynamoDBConfig : contains
+    
+    %% Entidades e Dados
+    TransactionData --> TransactionHyperledger_BatchInfo : derived from
+    DynamoDBClient --> TransactionData : persists
+    
+    %% Documentação
+    Main --> SwaggerDocs : generates
+    SwaggerDocs --> APISchemas : contains

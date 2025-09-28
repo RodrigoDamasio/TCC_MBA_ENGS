@@ -1,0 +1,121 @@
+sequenceDiagram
+    participant C as Client
+    participant GR as Gin Router
+    participant BH as BatchHandler
+    participant SF as Support Functions
+    participant FS as Fabric SDK
+    participant HF as Hyperledger Fabric
+    participant DB as DynamoDB
+
+    Note over C, DB: Cenário 1: Criação de Lote de Teste de Qualidade
+
+    C->>+GR: POST /batch (JSON payload)
+    Note right of C: Dados do lote:<br/>ID, MinLimit, MaxLimit,<br/>Values, ProductionOrder, etc.
+
+    GR->>+BH: CreateBatch(gin.Context)
+    Note right of GR: Rota mapeada para<br/>batchController.CreateBatch
+
+    BH->>+BH: ShouldBindJSON(data)
+    Note right of BH: Validação e parsing<br/>dos dados de entrada
+
+    BH->>+SF: ParseEntityFromJSON(data)
+    SF-->>-BH: TransactionHyperledger_BatchInfo
+    Note right of SF: Converte map[string]interface{}<br/>para struct tipada
+
+    BH->>+FS: ContractPointer.SubmitTransaction()
+    Note right of BH: Função: "PerformBatchQualityTest"<br/>Args: ID, MinLimit, MaxLimit, etc.
+
+    FS->>+HF: Submit to Blockchain
+    Note right of FS: Transação submetida<br/>ao chaincode
+
+    HF-->>-FS: Transaction Submit Result
+    FS-->>-BH: commit, err
+
+    BH->>+BH: commit.Status().Successful
+    Note right of BH: Aguarda confirmação<br/>do commit no ledger
+
+    alt Commit Successful
+        BH->>+SF: ExtractBatchInfo(TransactionFields, TransactionID)
+        SF-->>-BH: entity.TransactionData
+        Note right of SF: Organiza dados para<br/>persistência no DynamoDB
+
+        BH->>+DB: SaveTransaction(TransactionData)
+        Note right of DB: Salva dados após<br/>commit confirmado
+        DB-->>-BH: Success
+
+        BH-->>-GR: HTTP 200 + JSON Response
+        Note right of BH: Resposta com dados do lote,<br/>hash da transação, etc.
+    else Commit Failed
+        BH-->>-GR: HTTP 500 + Error Message
+        Note right of BH: "Transação não foi<br/>confirmada no ledger"
+    end
+
+    GR-->>-C: JSON Response
+    Note left of C: Sucesso: Dados do lote criado<br/>Erro: Mensagem de erro
+
+    Note over C, DB: ────────────────────────────────────────
+
+    Note over C, DB: Cenário 2: Consulta de Lote por ID
+
+    C->>+GR: GET /batch/{id}
+    Note right of C: Parâmetro: ID do lote<br/>ex: "BATCH-2024-000001"
+
+    GR->>+BH: QueryBatchByID(gin.Context)
+    Note right of GR: Extrai ID do path parameter
+
+    BH->>+BH: c.Param("id")
+    Note right of BH: Obtém ID do lote<br/>da URL
+
+    BH->>+FS: ContractPointer.EvaluateTransaction()
+    Note right of BH: Função: "QueryQualityTestBatch"<br/>Args: batchID
+
+    FS->>+HF: Query Blockchain
+    Note right of FS: Consulta somente leitura<br/>não altera o estado
+
+    HF-->>-FS: Batch Data (JSON)
+    FS-->>-BH: evaluateResult, err
+
+    alt Query Successful
+        BH->>+BH: json.Unmarshal(evaluateResult)
+        Note right of BH: Parse da resposta<br/>JSON do chaincode
+
+        BH-->>-GR: HTTP 200 + Batch Data JSON
+        Note right of BH: Dados completos do lote<br/>de teste de qualidade
+    else Query Failed
+        BH-->>-GR: HTTP 500 + Error Message
+        Note right of BH: "Erro ao consultar lote<br/>de teste de qualidade"
+    end
+
+    GR-->>-C: JSON Response
+    Note left of C: Sucesso: Dados do lote<br/>Erro: Mensagem de erro
+
+    Note over C, DB: ────────────────────────────────────────
+
+    Note over C, DB: Cenário 3: Health Check
+
+    C->>+GR: GET /health
+    GR->>+GR: Health Check Handler
+    Note right of GR: Função anônima inline<br/>no main.go
+
+    GR-->>-C: HTTP 200 + Health Status
+    Note left of C: status: "healthy"<br/>service: "fabric-gateway"<br/>version: "1.0.0"
+
+    Note over C, DB: ────────────────────────────────────────
+
+    Note over C, DB: Fluxos de Erro Comuns
+
+    Note over BH: Erro de Validação
+    BH-->>GR: HTTP 400 + "Dados inválidos"
+
+    Note over FS: Erro de Conexão Fabric
+    FS-->>BH: Error: "Failed to connect"
+    BH-->>GR: HTTP 500 + "Erro ao conectar com Fabric"
+
+    Note over HF: Erro de Chaincode
+    HF-->>FS: Chaincode Error
+    FS-->>BH: Transaction Error
+    BH-->>GR: HTTP 500 + "Erro na execução do chaincode"
+
+    Note over DB: Erro DynamoDB
+    DB-->>BH: Database Error
+    Note right of DB: Erro na persistência<br/>(não afeta blockchain)

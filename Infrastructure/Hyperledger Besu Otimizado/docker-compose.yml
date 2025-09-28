@@ -1,0 +1,119 @@
+version: '3.8'
+
+services:
+  besu-node1-opt:
+    hostname: besu-node1-opt
+    image: hyperledger-besu:latest
+    user: root
+    networks:
+      - besu-network-opt
+    container_name: besu-node1-opt
+    volumes:
+      - ./Data/besu-data1:/opt/besu/data
+      - ./nodekey:/opt/besu/key
+    ports:
+      - "8550:8545"       # Map container's RPC HTTP port 8545 to host's port 8546
+    command: >
+      --genesis-file=/opt/besu/config/genesis.json
+      --p2p-port=30303
+      --rpc-http-port=8545
+      --rpc-ws-port=8546
+      --rpc-http-apis=ADMIN,QBFT,ETH,NET,WEB3,DEBUG 
+      --node-private-key-file=/opt/besu/key/key
+      --rpc-http-enabled
+      --rpc-ws-enabled
+      --min-gas-price=0
+      --data-path=/opt/besu/data
+      --logging=INFO
+      --bootnodes=
+      --rpc-http-cors-origins="all" 
+      --host-allowlist="*"
+
+  besu-node2-opt:
+    hostname: besu-node2-opt
+    image: hyperledger-besu:latest
+    user: root
+    networks:
+      - besu-network-opt
+    depends_on:
+      - besu-node1-opt
+    container_name: besu-node2-opt
+    volumes:
+      - ./Data/besu-data2:/opt/besu/data
+      - ./nodekey1:/opt/besu/key
+    ports:
+      - "8551:8547"   
+    entrypoint: /bin/sh
+    command:
+      - -c
+      - |
+        BOOTNODE_IP=$(getent hosts besu-node1-opt | awk '{ print $1 }') \
+        BOOTNODE_IP=172.16.20.2 \
+        besu --genesis-file=/opt/besu/config/genesis.json \
+        --p2p-port=30303 \
+        --rpc-http-port=8547 \
+        --node-private-key-file=/opt/besu/key/key \
+        --rpc-ws-port=8548 \
+        --rpc-http-enabled \
+        --rpc-http-apis=ADMIN,QBFT,ETH,NET,WEB3,DEBUG,TXPOOL \
+        --rpc-ws-enabled \
+        --min-gas-price=0 \
+        --data-path=/opt/besu/data \
+        --rpc-http-cors-origins='all' \
+        --host-allowlist='*' \
+        --logging=INFO \
+        --bootnodes="enode://8809fce211cc13029559b9e0bd7762d316347e630dd575a7e4279ba4de41e2ee56660bfc1f891218ef1b5f12e202860f4262b569b1eccb859f3bf89093540301@172.16.20.2:30303"
+      
+  besu-node3-opt:
+    hostname: besu-node3-opt
+    image: hyperledger-besu:latest
+    user: root
+    networks:
+      - besu-network-opt
+    depends_on:
+      - besu-node1-opt
+    container_name: besu-node3-opt
+    volumes:
+      - ./Data/besu-data3:/opt/besu/data
+      - ./nodekey2:/opt/besu/key
+    command: >
+      --genesis-file=/opt/besu/config/genesis.json
+      --p2p-port=30303
+      --min-gas-price=0
+      --data-path=/opt/besu/data
+      --node-private-key-file=/opt/besu/key/key
+      --logging=INFO
+      --bootnodes="enode://8809fce211cc13029559b9e0bd7762d316347e630dd575a7e4279ba4de41e2ee56660bfc1f891218ef1b5f12e202860f4262b569b1eccb859f3bf89093540301@172.16.20.2:30303"
+
+  besu-node4-opt:
+    hostname: besu-node4-opt
+    image: hyperledger-besu:latest
+    user: root
+    networks:
+      - besu-network-opt
+    depends_on:
+      - besu-node1-opt
+    container_name: besu-node4-opt
+    volumes:
+      - ./Data/besu-data4:/opt/besu/data
+      - ./nodekey3:/opt/besu/key
+    command: >
+      --genesis-file=/opt/besu/config/genesis.json
+      --p2p-port=30303
+      --min-gas-price=0
+      --data-path=/opt/besu/data
+      --node-private-key-file=/opt/besu/key/key
+      --logging=INFO
+      --bootnodes="enode://8809fce211cc13029559b9e0bd7762d316347e630dd575a7e4279ba4de41e2ee56660bfc1f891218ef1b5f12e202860f4262b569b1eccb859f3bf89093540301@172.16.20.2:30303"
+networks:
+  besu-network-opt:
+    driver: bridge
+    ipam:
+      config:
+      - subnet: 172.16.20.0/28
+
+volumes:
+  besu-data1-opt:
+  besu-data2-opt:
+  besu-data3-opt:
+  besu-data4-opt:

@@ -1,0 +1,94 @@
+classDiagram
+    %% ===== MAIN =====
+    class main {
+        +main()
+    }
+
+    %% ===== CCHandler =====
+    class Handler {
+        +CreateBatch()
+        +QueryBatchByID()
+    }
+
+    class SupportFunctions {
+        +ParseEntityFromJSON()
+        +ExtractBatchInfo()
+        +validateBatchData()
+    }
+
+    %% ===== CCEntitys =====
+    class QualityTestContract {
+        +ID
+        +MinLimit
+        +MaxLimit
+        +Values
+        +ProductionOrder
+        +TestDate
+        +TestDescription
+        +TokenURI
+        +ToJSON()
+        +Validate()
+    }
+
+    class TransactionData {
+        +ID
+        +ProductionOrder
+        +FinalResult
+        +Data_daytime
+        +Hash
+        +TransactionID
+        +CreatedAt
+    }
+
+    %% ===== CCInfra/RPC_besu =====
+    class RPCConfig {
+        +LoadConfig()
+        +GetNodeURL()
+        +GetNetworkID()
+    }
+
+    class RPCConnection {
+        +Connect()
+        +CallMethod()
+    }
+
+    %% ===== CCInfra/DB =====
+    class DBConfig {
+        +LoadConfig()
+        +GetTableName()
+        +GetRegion()
+        +GetAccessKeyID()
+        +GetSecretAccessKey()
+        +GetEndpoint()
+    }
+
+    class DynamoDBConnection {
+        +SaveTransaction()
+        +GetTransaction()
+        +CreateTable()
+        +TableExists()
+    }
+
+    %% ===== CCDocs =====
+    class SwaggerDocs {
+        +Title
+        +Version
+        +Description
+        +Host
+        +BasePath
+        +Schemes
+    }
+
+    %% ===== RELACIONAMENTOS =====
+    main --> Handler : uses
+    Handler --> SupportFunctions : uses
+    Handler --> QualityTestContract : returns
+    Handler --> TransactionData : returns
+    SupportFunctions --> QualityTestContract : creates
+    SupportFunctions --> TransactionData : creates
+    Handler --> RPCConnection : uses
+    RPCConnection --> RPCConfig : uses
+    Handler --> DynamoDBConnection : uses
+    DynamoDBConnection --> DBConfig : uses
+    DynamoDBConnection --> TransactionData : persists
+    main --> SwaggerDocs : generates
