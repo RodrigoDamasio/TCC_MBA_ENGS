@@ -1,13 +1,61 @@
-# Sample Hardhat Project
+# Smart Contracts for Besu (Hardhat Project)
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a Hardhat Ignition module that deploys that contract.
+This project uses Hardhat for developing, testing, and deploying Solidity smart contracts on Hyperledger Besu.
 
-Try running some of the following tasks:
+## Stack
+- Solidity (contracts/)
+- Hardhat (Node.js)
+- Ethers.js
+- Mocha/Chai (testing)
 
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat ignition deploy ./ignition/modules/Lock.js
-```
+## How to Use (Development)
+
+1. **Install dependencies**
+    ```sh
+    npm install
+    ```
+
+2. **Compile contracts**
+    ```sh
+    npx hardhat compile
+    ```
+
+3. **Run tests**
+    ```sh
+    npx hardhat test
+    ```
+
+4. **Deploy to Besu**
+    - Update `hardhat.config.js` with Besu RPC and account.
+    - Run:
+      ```sh
+      npx hardhat run scripts/deploy_besu.js --network besu
+      ```
+
+5. **Interact with contracts**
+    - Use scripts like `scripts/Assina_Besu.js` (requires ethers.js) to sign and interact.
+    - Example:
+      ```sh
+      node scripts/Assina_Besu.js
+      ```
+
+6. **Ignition Deployment**
+    - Use Hardhat Ignition for advanced deployments:
+      ```sh
+      npx hardhat ignition deploy ./ignition/modules/Lock.js
+      ```
+
+7. **Configuration**
+    - Set up network details and private keys in `hardhat.config.js`.
+
+8. **Troubleshooting**
+    - Check Hardhat output and logs for errors.
+    - Ensure Besu node is running and accessible.
+
+9. **Production**
+    - Use environment variables for secrets and private keys.
+
+## Notes
+- All contract code is in `contracts/`.
+- Tests are in `test/`.
+- Scripts for deployment/interaction are in `scripts/`.
